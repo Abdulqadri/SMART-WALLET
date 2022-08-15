@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(c =>
-                c.UseSqlServer("Server=(localdb)\\mssqllocaldb; Database=SmtWalletDb; Trusted_Connection=True;"));
+                c.UseSqlServer("Server=DESKTOP-25C8FP3\\FELIX; Database=SmtWalletDb; Trusted_Connection=True;"));
 
 builder.Services.AddScoped<IRepository<Client, Guid>, ClientRepository>();
 builder.Services.AddScoped<IRepository<Nationality, Guid>, NationalityRepository>();
@@ -36,12 +36,11 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-var serviceProvider = app.Services.GetRequiredService<IServiceProvider>(); 
+var serviceProvider = app.Services.GetRequiredService<IServiceProvider>();
 using (var scope = serviceProvider.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     await SeedHelper.InitializeData(context);
-
 }
 
 app.Run();
